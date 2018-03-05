@@ -14,10 +14,11 @@ We are an open source, non-profit community, working to develop a democratic eng
 # Contact info
 Contact us on Twitter to join the team.
 
-Join us on the following channels:
+Join/follow us on the following channels:
 - [development discussions](https://www.loomio.org/g/ET40tXUC/openciviwiki) on Loomio
 - [live chat](https://riot.im/app/#/room/#CiviWiki:matrix.org) on Matrix
 - [development roadmap](https://waffle.io/CiviWiki/OpenCiviWiki) on Waffle.io
+- [videos of our weekly planning meetings](https://archive.org/search.php?query=subject%3A%22CiviWiki%22&sort=-date) on Internet Archive
 - **Twitter:** [@CiviWiki](https://twitter.com/civiwiki)
 
 # Contribute
