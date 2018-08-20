@@ -13,6 +13,7 @@ from django.utils.translation import ugettext_lazy as _
 
 from api.tasks import send_email as task_send_email
 from .reserved_usernames import RESERVED_USERNAMES
+from .retired_usernames import RETIRED_USERNAMES
 
 class AccountRegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -50,7 +51,7 @@ class AccountRegistrationForm(UserCreationForm):
         if not re.match(r'^[0-9a-z]*$', username):
             raise forms.ValidationError(self.error_message['invalid_username'])
 
-        if User.objects.filter(username=username).exists() or username in RESERVED_USERNAMES:
+        if User.objects.filter(username=username).exists() or username in RESERVED_USERNAMES or username in RETIRED_USERNAMES:
             raise forms.ValidationError(self.error_message['username_exists'])
 
         return username
