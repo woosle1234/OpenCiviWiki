@@ -25,6 +25,7 @@ class AccountRegistrationForm(UserCreationForm):
         'email_exists': _("An account exists for this email address."),
         'username_exists': _("Sorry, this username already exists."),
         'invalid_password': _("Password can not be entirely numeric."),
+        'invalid_password_generic': _("Password does not have at least one number, upper, or lower case letter."),
         'invalid_password_length': _("Password must be at least 4 characters.")
     }
 
@@ -57,13 +58,37 @@ class AccountRegistrationForm(UserCreationForm):
         return username
 
     def clean_password(self):
+        #Best practices for passwords:
+        #Length > 8
+        #One lower case
+        #One upper case
+        #One number
+        #https://en.wikipedia.org/wiki/Password_strength
+
+        #Duplicate this in PasswordResetForm below
         password = self.cleaned_data.get('password')
 
-        if len(password) < 4:
+        if len(password) < 8:
             raise forms.ValidationError(self.error_message['invalid_password_length'])
 
         if password.isdigit():
             raise forms.ValidationError(self.error_message['invalid_password'])
+
+        #Digit search
+        if re.search(r"\d", password) is None:
+            raise forms.ValidatonError(self.error_message['invalid_password_generic'])
+
+        #Uppercase search
+        if re.search(r"[A-Z]", password) is None:
+            raise forms.ValidatonError(self.error_message['invalid_password_generic'])
+
+        #lowercase search
+        if re.search(r"[a-z]", password) is None:
+            raise forms.ValidatonError(self.error_message['invalid_password_generic'])
+
+        #Special Chars
+        #if re.search(r"[ !#$%&'()*+,-./[\\\]^_`{|}~"+r'"]', password) is None:
+        #    raise forms.ValidatonError(self.error_message['invalid_password_generic'])
 
         return password
 
@@ -83,17 +108,32 @@ class PasswordResetForm(SetPasswordForm):
     """
     error_messages = dict(SetPasswordForm.error_messages, **{
         'invalid_password': _("Password can not be entirely numeric."),
-        'invalid_password_length': _("Password must be at least 4 characters.")
+        'invalid_password_length': _("Password must be at least 8 characters.")
     })
 
     def clean_new_password1(self):
         password = self.cleaned_data.get('new_password1')
 
-        if len(password) < 4:
+        if len(password) < 8:
             raise forms.ValidationError(self.error_messages['invalid_password_length'])
 
         if password.isdigit():
             raise forms.ValidationError(self.error_messages['invalid_password'])
+        #Digit search
+        if re.search(r"\d", password) is None:
+            raise forms.ValidatonError(self.error_message['invalid_password_generic'])
+
+        #Uppercase search
+        if re.search(r"[A-Z]", password) is None:
+            raise forms.ValidatonError(self.error_message['invalid_password_generic'])
+
+        #lowercase search
+        if re.search(r"[a-z]", password) is None:
+            raise forms.ValidatonError(self.error_message['invalid_password_generic'])
+
+        #Special Chars
+        #if re.search(r"[ !#$%&'()*+,-./[\\\]^_`{|}~"+r'"]', password) is None:
+        #    raise forms.ValidatonError(self.error_message['invalid_password_generic'])
 
         return password
 
