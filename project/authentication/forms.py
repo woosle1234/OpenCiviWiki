@@ -19,14 +19,15 @@ class AccountRegistrationForm(UserCreationForm):
     email = forms.EmailField(required=True)
     username = forms.CharField(required=True)
     password = forms.CharField(required=True)
+    isAdult = forms.checkbox(required=True, default='True')
 
     error_message = {
         'invalid_username': _("Usernames may only use lowercase characters or numbers."),
-        'email_exists': _("An account exists for this email address."),
+        'email_exists': _("An account already exists for this email address."),
         'username_exists': _("Sorry, this username already exists."),
         'invalid_password': _("Password can not be entirely numeric."),
         'invalid_password_generic': _("Password does not have at least one number, upper, or lower case letter."),
-        'invalid_password_length': _("Password must be at least 4 characters.")
+        'invalid_password_length': _("Password must be at least 8 characters.")
     }
 
     def __init__(self, *args, **kargs):
@@ -36,7 +37,7 @@ class AccountRegistrationForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password')
+        fields = ('username', 'email', 'password', 'isAdult')
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
